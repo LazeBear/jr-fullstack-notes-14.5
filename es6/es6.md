@@ -699,5 +699,97 @@ const uniqueArray = [...new Set(array)];
 console.log(uniqueArray); // [1, 2, 3, 4]
 ```
 
+## Classes
+
+Classes are a template for creating objects. Classes are in fact functions, class is only a syntax sugar.
+
+```js
+function Person(name) {
+  this.name = name;
+  this.toString = function () {
+    console.log('name: ' + this.name);
+  };
+}
+var mason = new Person('mason');
+mason.toString(); // name: mason
+```
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  toString() {
+    console.log(`name: ${this.name}`);
+  }
+}
+const mason = new Person('mason');
+mason.toString(); // name: mason
+```
+
+### extends
+
+```js
+class Teacher extends Person {
+  constructor(name) {
+    super(name);
+  }
+  teach() {
+    console.log(`${this.name} is teaching`);
+  }
+}
+
+const mason = new Teacher('mason');
+mason.teach(); // mason is teaching
+mason.toString(); // name: mason -> BUT how?
+```
+
+```js
+// is mason constructed by Teacher?
+mason instanceof Teacher; // true
+mason instanceof Person; // true
+mason instanceof Object; // true
+```
+
+## quiz
+
+```js
+function Pet(name) {
+  this.name = name;
+  this.getName = () => this.name;
+}
+
+const cat = new Pet('Fluffy');
+
+console.log(cat.getName()); // Fluffy
+
+const { getName } = cat;
+console.log(getName()); // Fluffy
+```
+
+```js
+var scope = 'global scope';
+function checkscope() {
+  var scope = 'local scope';
+  function f() {
+    return scope;
+  }
+  return f();
+}
+checkscope(); // local
+```
+
+```js
+var scope = 'global scope';
+function checkscope() {
+  var scope = 'local scope';
+  function f() {
+    return scope;
+  }
+  return f;
+}
+checkscope()(); // local
+```
+
 Quiz questions references
 [1](https://dmitripavlutin.com/javascript-this-interview-questions/#question-1-variable-vs-property)
