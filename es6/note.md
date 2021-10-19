@@ -40,3 +40,5 @@ escape
 'I\'m mason'
 
 context
+
+constructor function

@@ -148,3 +148,23 @@ const object = {
 const object = {};
 object.who = 'World';
 object.farewell = () => {};
+
+class Teacher extends Person {
+  constructor(name, age, sex) {
+    super(name, age);
+    this.sex = sex;
+    if (!age) {
+      throw new Error('');
+    }
+  }
+
+  teach() {
+    console.log(`${this.name} is teaching`);
+  }
+}
+
+const mason = new Teacher('mason', 23, 'male');
+
+mason.teach();
+
+mason.toString();
