@@ -37,6 +37,7 @@ const promise = new Promise((res, rej) => {
 });
 
 // promise chain
+let isLoading = true;
 promise
   .then((result) => {
     console.log(result);
@@ -48,6 +49,9 @@ promise
   })
   .then((result) => {
     console.log(result);
+  })
+  .finally(() => {
+    isLoading = false;
   });
 
 // syntax sugar
