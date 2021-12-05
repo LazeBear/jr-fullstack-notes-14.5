@@ -1,6 +1,17 @@
 const Course = require('../models/course');
 const Joi = require('joi');
 
+// curring function
+// function tryCatch(routeHandler) {
+//   return (req, res, next) => {
+//     try {
+//       routeHandler(req, res, next);
+//     } catch (e) {
+//       next(e);
+//     }
+//   };
+// }
+
 async function getAllCourses(req, res) {
   // db.courses.find()
   // query (chain)
@@ -29,6 +40,7 @@ async function getAllCourses(req, res) {
 async function getCourseById(req, res) {
   const { id } = req.params;
   // .find({_id:id})
+  // use populate for retrieve student data
   const course = await Course.findById(id).exec();
   if (!course) {
     return res.status(404).json({ error: 'course not found' });
@@ -69,6 +81,14 @@ async function addCourse(req, res) {
 
   // new Course(req.body);
   // Course.create()
+
+  // check if code duplicate
+  const existingCourse = await Course.findById(code).exec();
+  if (existingCourse) {
+    // conflicts
+    return res.sendStatus(409);
+  }
+
   const course = new Course({
     name,
     code,
@@ -106,6 +126,7 @@ async function deleteCourseById(req, res) {
   if (!course) {
     return res.status(404).json({ error: 'course not found' });
   }
+  // remove course ref in student collection
   return res.sendStatus(204);
 }
 

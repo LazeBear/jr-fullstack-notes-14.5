@@ -1,3 +1,4 @@
+const Course = require('../models/course');
 const Student = require('../models/student');
 
 async function getAllStudents(req, res) {
@@ -7,7 +8,9 @@ async function getAllStudents(req, res) {
 
 async function getStudentById(req, res) {
   const { id } = req.params;
-  const student = await Student.findById(id).exec();
+  const student = await Student.findById(id)
+    .populate('courses', 'name description -_id')
+    .exec();
   if (!student) {
     return res.status(404).json({ error: 'student not found' });
   }
@@ -43,7 +46,46 @@ async function deleteStudentById(req, res) {
   if (!student) {
     return res.status(404).json({ error: 'student not found' });
   }
+  await Course.updateMany(
+    { students: student._id },
+    {
+      $pull: {
+        students: student._id,
+      },
+    }
+  ).exec();
   return res.sendStatus(204);
+}
+
+async function addCourseToStudent(req, res) {
+  const { id, code } = req.params;
+  const course = await Course.findById(code).exec();
+  const student = await Student.findById(id).exec();
+  if (!student || !course) {
+    // {error: 'xxxx not found'}
+    return res.sendStatus(404);
+  }
+  // student.courses.push()
+  student.courses.addToSet(course._id);
+  course.students.addToSet(student._id);
+  await student.save();
+  await course.save();
+  return res.json(student);
+}
+
+async function removeCourseFromStudent(req, res) {
+  const { id, code } = req.params;
+  const course = await Course.findById(code).exec();
+  const student = await Student.findById(id).exec();
+  if (!student || !course) {
+    // {error: 'xxxx not found'}
+    return res.sendStatus(404);
+  }
+  student.courses.pull(course._id);
+  course.students.pull(student._id);
+  await student.save();
+  await course.save();
+  return res.json(student);
 }
 
 module.exports = {
@@ -52,4 +94,6 @@ module.exports = {
   addStudent,
   updateStudentById,
   deleteStudentById,
+  addCourseToStudent,
+  removeCourseFromStudent,
 };

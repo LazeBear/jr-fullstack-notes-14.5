@@ -33,6 +33,18 @@ const schema = new Schema({
       msg: 'Invalid email format',
     },
   },
+  courses: [
+    {
+      type: String,
+      // type: 'string',
+      ref: 'Course',
+    },
+  ],
+  // course: {
+  //   type: String,
+  //   // type: 'string',
+  //   ref: 'Course',
+  // },
 });
 
 const Model = model('Student', schema);

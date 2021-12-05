@@ -17,6 +17,18 @@ const schema = new mongoose.Schema({
     default: '',
     type: String,
   },
+  address: {
+    street1: String,
+    street2: String,
+    state: String,
+    postcode: Number,
+  },
+  students: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student',
+    },
+  ],
 });
 
 // courses
