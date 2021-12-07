@@ -5,7 +5,9 @@ module.exports = (req, res, next) => {
   const authorizationHeader = req.header('Authorization');
   if (!authorizationHeader) {
     // token missing
-    return res.sendStatus(401);
+    // return res.sendStatus(401);
+    res.sendStatus(401);
+    return;
   }
   // Bearer xxxxxxxx
   const tokenArray = authorizationHeader.split(' ');

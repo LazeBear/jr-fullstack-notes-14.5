@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "pm2 start src/index.js --name jrCMS",
+    "poststart": "pm2 log jrCMS",
+    "stop": "pm2 stop jrCMS",
     "dev": "nodemon src/index.js",
-    "debug": "nodemon --inspect src/index.js"
+    "debug": "nodemon --inspect src/index.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -18,9 +22,13 @@
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.14",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pm2": "^5.1.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "@shelf/jest-mongodb": "^2.1.0",
+    "jest": "^27.4.3",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }
