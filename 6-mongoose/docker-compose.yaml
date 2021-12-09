@@ -1,0 +1,25 @@
+version: '3'
+services:
+  server:
+    # image: jr-cms-145
+    image: node:14
+    ports:
+      - 3000:3000
+    container_name: jr-cms-145_server
+    depends_on:
+      - mongo
+    # env_file:
+      # - fileName
+    environment:
+      - JWT_KEY=secret
+      - CONNECTION_STRING=mongodb://mongo/jr-cms-145
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "cd /app && rm -rf node_modules/ && npm i && npm run dev"
+      
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    container_name: jr-cms-145_mongo
